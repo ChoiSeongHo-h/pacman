@@ -87,17 +87,90 @@ def depthFirstSearch(problem):
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    pose = problem.getStartState()
+    directions = []
+    stack = util.Stack()
+    stack.push((pose, directions))
+    visitedPlace = []
+
+    while not problem.isGoalState(pose) :
+        if stack.isEmpty() :
+            return []
+
+        pose, directions = stack.pop()
+        visitedPlace.append(pose)
+        if problem.isGoalState(pose) :
+            return directions
+
+        for successors in problem.getSuccessors(pose) :
+            subPose, subDirection, _ = successors
+            if subPose in visitedPlace :
+                continue
+            stack.push((subPose, directions+[subDirection]))
+    return directions
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    pose = problem.getStartState()
+    directions = []
+    queue = util.Queue()
+    queue.push((pose, directions))
+    visitedPlace = []
+
+    while not problem.isGoalState(pose) :
+        if queue.isEmpty() :
+            return []
+
+        pose, directions = queue.pop()
+        visitedPlace.append(pose)
+        if problem.isGoalState(pose) :
+            return directions
+
+        for successors in problem.getSuccessors(pose) :
+            subPose, subDirection, _ = successors
+            if subPose in visitedPlace :
+                continue
+            queue.push((subPose, directions+[subDirection]))
+            visitedPlace.append(subPose)
+    return directions
 
 def uniformCostSearch(problem):
-    """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    pose = problem.getStartState()
+    backPose = None
+    directions = []
+    priority = 0
+    priorityQueue = util.PriorityQueue()
+    priorityQueue.push((pose, directions, priority), priority)
+    posePriority = {}
+    posePriority[problem.getStartState()] = priority
+
+    while (pose is None) or not problem.isGoalState(pose) :
+        if priorityQueue.isEmpty() :
+            return []
+
+        backPose = pose
+        pose, directions, priority = priorityQueue.pop()
+        if problem.isGoalState(pose) :
+            return directions
+
+        for successors in problem.getSuccessors(pose) :
+            subPose, subDirection, subPriority = successors
+            if subPose is backPose :
+                continue
+            hasPriority = subPose in posePriority
+            if not hasPriority :
+                posePriority[subPose] = priority+subPriority
+            elif hasPriority and posePriority[subPose]>priority+subPriority :
+                posePriority[subPose] = priority+subPriority
+            else :
+                continue
+
+            priorityQueue.push((subPose, directions+[subDirection], priority+subPriority), priority+subPriority)
+            posePriority[subPose] = priority+subPriority
+    return directions
+
 
 def nullHeuristic(state, problem=None):
     """
