@@ -146,7 +146,7 @@ def uniformCostSearch(problem):
     posePriority = {}
     posePriority[problem.getStartState()] = priority
 
-    while (pose is None) or not problem.isGoalState(pose) :
+    while not problem.isGoalState(pose) :
         if priorityQueue.isEmpty() :
             return []
 
