@@ -1,3 +1,6 @@
+DFS, BFS, 그리디 알고리즘 등을 팩맨에 적용해 보았다.
+
+
 # AI 인공지능
 See Midterm and Final Project:
 https://sites.google.com/hanyang.ac.kr/2021ai
